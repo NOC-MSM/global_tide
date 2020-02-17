@@ -1,0 +1,281 @@
+#   define ARRAY_TYPE(i,j,k,l,f)    REAL(wp)                    , INTENT(inout) ::   ARRAY_IN(i,j,k,l,f)
+#   define NAT_IN(k)                cd_nat
+#   define SGN_IN(k)                psgn
+#   define IBD_IN(k)                kb_bdy
+#   define F_SIZE(ptab)             1
+#   define OPT_K(k)                 
+#   if defined DIM_2d
+#      define ARRAY_IN(i,j,k,l,f)   ptab(i,j)
+#      define K_SIZE(ptab)          1
+#      define L_SIZE(ptab)          1
+#   endif
+#   if defined DIM_3d
+#      define ARRAY_IN(i,j,k,l,f)   ptab(i,j,k)
+#      define K_SIZE(ptab)          SIZE(ptab,3)
+#      define L_SIZE(ptab)          1
+#   endif
+#   if defined DIM_4d
+#      define ARRAY_IN(i,j,k,l,f)   ptab(i,j,k,l)
+#      define K_SIZE(ptab)          SIZE(ptab,3)
+#      define L_SIZE(ptab)          SIZE(ptab,4)
+#   endif
+
+   SUBROUTINE ROUTINE_BDY( ptab, cd_nat, psgn      , kb_bdy )
+      !!----------------------------------------------------------------------
+      !!                  ***  routine mpp_lnk_bdy_3d  ***
+      !!
+      !! ** Purpose :   Message passing management
+      !!
+      !! ** Method  :   Use mppsend and mpprecv function for passing BDY boundaries 
+      !!      between processors following neighboring subdomains.
+      !!            domain parameters
+      !!                    nlci   : first dimension of the local subdomain
+      !!                    nlcj   : second dimension of the local subdomain
+      !!                    nbondi_bdy : mark for "east-west local boundary"
+      !!                    nbondj_bdy : mark for "north-south local boundary"
+      !!                    noea   : number for local neighboring processors 
+      !!                    nowe   : number for local neighboring processors
+      !!                    noso   : number for local neighboring processors
+      !!                    nono   : number for local neighboring processors
+      !!
+      !! ** Action  :   ptab with update value at its periphery
+      !!
+      !!----------------------------------------------------------------------
+      ARRAY_TYPE(:,:,:,:,:)   ! array or pointer of arrays on which the boundary condition is applied
+      CHARACTER(len=1)            , INTENT(in   ) ::   NAT_IN(:)   ! nature of array grid-points
+      REAL(wp)                    , INTENT(in   ) ::   SGN_IN(:)   ! sign used across the north fold boundary
+      INTEGER                     , INTENT(in   ) ::   IBD_IN(:)   ! BDY boundary set
+      !
+      INTEGER  ::   ji, jj, jk, jl, jh, jf     ! dummy loop indices
+      INTEGER  ::   ipk, ipl, ipf              ! 3dimension of the input array
+      INTEGER  ::   imigr, iihom, ijhom        ! local integers
+      INTEGER  ::   ml_req1, ml_req2, ml_err   ! for key_mpi_isend
+      REAL(wp) ::   zland                      ! local scalar
+      INTEGER, DIMENSION(MPI_STATUS_SIZE) ::   ml_stat   ! for key_mpi_isend
+      !
+      REAL(wp), DIMENSION(:,:,:,:,:,:), ALLOCATABLE ::   zt3ns, zt3sn   ! 3d for north-south & south-north
+      REAL(wp), DIMENSION(:,:,:,:,:,:), ALLOCATABLE ::   zt3ew, zt3we   ! 3d for east-west & west-east
+      !!----------------------------------------------------------------------
+      !
+      ipk = K_SIZE(ptab)   ! 3rd dimension
+      ipl = L_SIZE(ptab)   ! 4th    -
+      ipf = F_SIZE(ptab)   ! 5th    -      use in "multi" case (array of pointers)
+      !      
+      ALLOCATE( zt3ns(jpi,nn_hls,ipk,ipl,ipf,2), zt3sn(jpi,nn_hls,ipk,ipl,ipf,2),   &
+         &      zt3ew(jpj,nn_hls,ipk,ipl,ipf,2), zt3we(jpj,nn_hls,ipk,ipl,ipf,2)  )
+
+      zland = 0._wp
+
+      ! 1. standard boundary treatment
+      ! ------------------------------
+      !
+      DO jf = 1, ipf                   ! number of arrays to be treated
+         !
+         !                                ! East-West boundaries
+         !                    
+         IF( nbondi == 2) THEN                  ! neither subdomain to the east nor to the west
+            !                                      !* Cyclic
+            IF( l_Iperio ) THEN
+               ARRAY_IN( 1 ,:,:,:,jf) = ARRAY_IN(jpim1,:,:,:,jf)
+               ARRAY_IN(jpi,:,:,:,jf) = ARRAY_IN(  2  ,:,:,:,jf)
+            ELSE                                   !* Closed
+               IF( .NOT. NAT_IN(jf) == 'F' )   ARRAY_IN(     1       :nn_hls,:,:,:,jf) = zland  ! east except F-point
+                                               ARRAY_IN(nlci-nn_hls+1:jpi   ,:,:,:,jf) = zland  ! west
+            ENDIF
+         ELSEIF(nbondi == -1) THEN              ! subdomain to the east only
+            IF( .NOT. NAT_IN(jf) == 'F' )   ARRAY_IN(1:nn_hls,:,:,:,jf) = zland     ! south except F-point
+            !
+         ELSEIF(nbondi ==  1) THEN              ! subdomain to the west only
+            ARRAY_IN(nlci-nn_hls+1:jpi,:,:,:,jf) = zland    ! north
+         ENDIF
+         !                                ! North-South boundaries
+         !
+         IF( nbondj == 2) THEN                  ! neither subdomain to the north nor to the south
+            !                                      !* Cyclic
+            IF( l_Jperio ) THEN
+               ARRAY_IN(:, 1 ,:,:,jf) = ARRAY_IN(:,jpjm1,:,:,jf)
+               ARRAY_IN(:,jpj,:,:,jf) = ARRAY_IN(:,  2  ,:,:,jf)
+            ELSE                                   !* Closed
+               IF( .NOT. NAT_IN(jf) == 'F' )   ARRAY_IN(:,     1       :nn_hls,:,:,jf) = zland  ! east except F-point
+                                               ARRAY_IN(:,nlcj-nn_hls+1:jpj   ,:,:,jf) = zland  ! west
+            ENDIF
+         ELSEIF(nbondj == -1) THEN              ! subdomain to the east only
+            IF( .NOT. NAT_IN(jf) == 'F' )   ARRAY_IN(:,1:nn_hls,:,:,jf) = zland     ! south except F-point
+            !
+         ELSEIF(nbondj ==  1) THEN              ! subdomain to the west only
+            ARRAY_IN(:,nlcj-nn_hls+1:jpj,:,:,jf) = zland    ! north
+         ENDIF
+         !
+      END DO
+
+      ! 2. East and west directions exchange
+      ! ------------------------------------
+      ! we play with the neigbours AND the row number because of the periodicity 
+      !
+      !
+      DO jf = 1, ipf
+         SELECT CASE ( nbondi_bdy(IBD_IN(jf)) )      ! Read Dirichlet lateral conditions
+         CASE ( -1, 0, 1 )                ! all exept 2 (i.e. close case)
+            iihom = nlci-nreci
+               DO jl = 1, ipl
+                  DO jk = 1, ipk
+                     DO jh = 1, nn_hls
+                        zt3ew(:,jh,jk,jl,jf,1) = ARRAY_IN(nn_hls+jh,:,jk,jl,jf)
+                        zt3we(:,jh,jk,jl,jf,1) = ARRAY_IN(iihom +jh,:,jk,jl,jf)
+                     END DO
+                  END DO
+               END DO
+         END SELECT
+         !
+         !                           ! Migrations
+!!gm      imigr = nn_hls * jpj * ipk * ipl * ipf
+         imigr = nn_hls * jpj * ipk * ipl
+         !
+         SELECT CASE ( nbondi_bdy(IBD_IN(jf)) )
+         CASE ( -1 )
+            CALL mppsend( 2, zt3we(1,1,1,1,1,1), imigr, noea, ml_req1 )
+            CALL mpprecv( 1, zt3ew(1,1,1,1,1,2), imigr, noea )
+            IF(l_isend) CALL mpi_wait(ml_req1, ml_stat, ml_err)
+         CASE ( 0 )
+            CALL mppsend( 1, zt3ew(1,1,1,1,1,1), imigr, nowe, ml_req1 )
+            CALL mppsend( 2, zt3we(1,1,1,1,1,1), imigr, noea, ml_req2 )
+            CALL mpprecv( 1, zt3ew(1,1,1,1,1,2), imigr, noea )
+            CALL mpprecv( 2, zt3we(1,1,1,1,1,2), imigr, nowe )
+            IF(l_isend) CALL mpi_wait(ml_req1, ml_stat, ml_err)
+            IF(l_isend) CALL mpi_wait(ml_req2, ml_stat, ml_err)
+         CASE ( 1 )
+            CALL mppsend( 1, zt3ew(1,1,1,1,1,1), imigr, nowe, ml_req1 )
+            CALL mpprecv( 2, zt3we(1,1,1,1,1,2), imigr, nowe )
+            IF(l_isend) CALL mpi_wait(ml_req1, ml_stat, ml_err)
+         END SELECT
+         !
+         !                           ! Write Dirichlet lateral conditions
+         iihom = nlci-nn_hls
+         !
+         !
+         SELECT CASE ( nbondi_bdy_b(IBD_IN(jf)) )
+         CASE ( -1 )
+            DO jl = 1, ipl
+               DO jk = 1, ipk
+                  DO jh = 1, nn_hls
+                     ARRAY_IN(iihom+jh,:,jk,jl,jf) = zt3ew(:,jh,jk,jl,jf,2)
+                  END DO
+               END DO
+            END DO
+         CASE ( 0 )
+            DO jl = 1, ipl
+               DO jk = 1, ipk
+                  DO jh = 1, nn_hls
+                     ARRAY_IN(jh      ,:,jk,jl,jf) = zt3we(:,jh,jk,jl,jf,2)
+                     ARRAY_IN(iihom+jh,:,jk,jl,jf) = zt3ew(:,jh,jk,jl,jf,2)
+                  END DO
+               END DO
+            END DO
+         CASE ( 1 )
+            DO jl = 1, ipl
+               DO jk = 1, ipk
+                  DO jh = 1, nn_hls
+                     ARRAY_IN(jh      ,:,jk,jl,jf) = zt3we(:,jh,jk,jl,jf,2)
+                  END DO
+               END DO
+            END DO
+         END SELECT
+         !
+      END DO
+
+      ! 3. North and south directions
+      ! -----------------------------
+      ! always closed : we play only with the neigbours
+      !
+      DO jf = 1, ipf
+         IF( nbondj_bdy(IBD_IN(jf)) /= 2 ) THEN      ! Read Dirichlet lateral conditions
+            ijhom = nlcj-nrecj
+            DO jl = 1, ipl
+               DO jk = 1, ipk
+                  DO jh = 1, nn_hls
+                     zt3sn(:,jh,jk,jl,jf,1) = ARRAY_IN(:,ijhom +jh,jk,jl,jf)
+                     zt3ns(:,jh,jk,jl,jf,1) = ARRAY_IN(:,nn_hls+jh,jk,jl,jf)
+                  END DO
+               END DO
+            END DO
+         ENDIF
+         !
+         !                           ! Migrations
+!!gm      imigr = nn_hls * jpi * ipk * ipl * ipf
+         imigr = nn_hls * jpi * ipk * ipl
+         !
+         SELECT CASE ( nbondj_bdy(IBD_IN(jf)) )
+         CASE ( -1 )
+            CALL mppsend( 4, zt3sn(1,1,1,1,1,1), imigr, nono, ml_req1 )
+            CALL mpprecv( 3, zt3ns(1,1,1,1,1,2), imigr, nono )
+            IF(l_isend) CALL mpi_wait(ml_req1, ml_stat, ml_err)
+         CASE ( 0 )
+            CALL mppsend( 3, zt3ns(1,1,1,1,1,1), imigr, noso, ml_req1 )
+            CALL mppsend( 4, zt3sn(1,1,1,1,1,1), imigr, nono, ml_req2 )
+            CALL mpprecv( 3, zt3ns(1,1,1,1,1,2), imigr, nono )
+            CALL mpprecv( 4, zt3sn(1,1,1,1,1,2), imigr, noso )
+            IF(l_isend) CALL mpi_wait(ml_req1, ml_stat, ml_err)
+            IF(l_isend) CALL mpi_wait(ml_req2, ml_stat, ml_err)
+         CASE ( 1 )
+            CALL mppsend( 3, zt3ns(1,1,1,1,1,1), imigr, noso, ml_req1 )
+            CALL mpprecv( 4, zt3sn(1,1,1,1,1,2), imigr, noso )
+            IF(l_isend) CALL mpi_wait(ml_req1, ml_stat, ml_err)
+         END SELECT
+         !
+         !                           ! Write Dirichlet lateral conditions
+         ijhom = nlcj-nn_hls
+         !
+         SELECT CASE ( nbondj_bdy_b(IBD_IN(jf)) )
+         CASE ( -1 )
+            DO jl = 1, ipl
+               DO jk = 1, ipk
+                  DO jh = 1, nn_hls
+                     ARRAY_IN(:,ijhom+jh,jk,jl,jf) = zt3ns(:,jh,jk,jl,jf,2)
+                  END DO
+               END DO
+            END DO
+         CASE ( 0 )
+            DO jl = 1, ipl
+               DO jk = 1, ipk
+                  DO jh = 1, nn_hls
+                     ARRAY_IN(:,      jh,jk,jl,jf) = zt3sn(:,jh,jk,jl,jf,2)
+                     ARRAY_IN(:,ijhom+jh,jk,jl,jf) = zt3ns(:,jh,jk,jl,jf,2)
+                  END DO
+               END DO
+            END DO
+         CASE ( 1 )
+            DO jl = 1, ipl
+               DO jk = 1, ipk
+                  DO jh = 1, nn_hls
+                     ARRAY_IN(:,jh,jk,jl,jf) = zt3sn(:,jh,jk,jl,jf,2)
+                  END DO
+               END DO
+            END DO
+         END SELECT
+      END DO
+
+      ! 4. north fold treatment
+      ! -----------------------
+      !
+      IF( npolj /= 0) THEN
+         !
+         SELECT CASE ( jpni )
+         CASE ( 1 )     ;   CALL lbc_nfd( ptab, NAT_IN(:), SGN_IN(:) OPT_K(:) )   ! only 1 northern proc, no mpp
+         CASE DEFAULT   ;   CALL mpp_nfd( ptab, NAT_IN(:), SGN_IN(:) OPT_K(:) )   ! for all northern procs.
+         END SELECT
+         !
+      ENDIF
+      !
+      DEALLOCATE( zt3ns, zt3sn, zt3ew, zt3we  )
+      !
+   END SUBROUTINE ROUTINE_BDY
+
+#undef ARRAY_TYPE
+#undef NAT_IN
+#undef SGN_IN
+#undef IBD_IN
+#undef ARRAY_IN
+#undef K_SIZE
+#undef L_SIZE
+#undef F_SIZE
+#undef OPT_K

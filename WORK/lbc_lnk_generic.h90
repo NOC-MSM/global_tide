@@ -1,0 +1,121 @@
+#if defined MULTI
+#   define NAT_IN(k)                cd_nat(k)   
+#   define SGN_IN(k)                psgn(k)
+#   define F_SIZE(ptab)             kfld
+#   define OPT_K(k)                 ,ipf
+#   if defined DIM_2d
+#      define ARRAY_TYPE(i,j,k,l,f)    TYPE(PTR_2D)                , INTENT(inout) ::   ptab(f)
+#      define ARRAY_IN(i,j,k,l,f)      ptab(f)%pt2d(i,j)
+#      define K_SIZE(ptab)             1
+#      define L_SIZE(ptab)             1
+#   endif
+#   if defined DIM_3d
+#      define ARRAY_TYPE(i,j,k,l,f)    TYPE(PTR_3D),INTENT(inout)::ptab(f)
+#      define ARRAY_IN(i,j,k,l,f)      ptab(f)%pt3d(i,j,k)
+#      define K_SIZE(ptab)             SIZE(ptab(1)%pt3d,3)
+#      define L_SIZE(ptab)             1
+#   endif
+#   if defined DIM_4d
+#      define ARRAY_TYPE(i,j,k,l,f)    TYPE(PTR_4D),INTENT(inout)::ptab(f)
+#      define ARRAY_IN(i,j,k,l,f)      ptab(f)%pt4d(i,j,k,l)
+#      define K_SIZE(ptab)             SIZE(ptab(1)%pt4d,3)
+#      define L_SIZE(ptab)             SIZE(ptab(1)%pt4d,4)
+#   endif
+#else
+#   define ARRAY_TYPE(i,j,k,l,f)    REAL(wp)                    , INTENT(inout) ::   ARRAY_IN(i,j,k,l,f)
+#   define NAT_IN(k)                cd_nat
+#   define SGN_IN(k)                psgn
+#   define F_SIZE(ptab)             1
+#   define OPT_K(k)                 
+#   if defined DIM_2d
+#      define ARRAY_IN(i,j,k,l,f)   ptab(i,j)
+#      define K_SIZE(ptab)          1
+#      define L_SIZE(ptab)          1
+#   endif
+#   if defined DIM_3d
+#      define ARRAY_IN(i,j,k,l,f)   ptab(i,j,k)
+#      define K_SIZE(ptab)          SIZE(ptab,3)
+#      define L_SIZE(ptab)          1
+#   endif
+#   if defined DIM_4d
+#      define ARRAY_IN(i,j,k,l,f)   ptab(i,j,k,l)
+#      define K_SIZE(ptab)          SIZE(ptab,3)
+#      define L_SIZE(ptab)          SIZE(ptab,4)
+#   endif
+#endif
+
+#if defined MULTI
+   SUBROUTINE ROUTINE_LNK( ptab, cd_nat, psgn, kfld, cd_mpp, pval )
+      INTEGER                     , INTENT(in   ) ::   kfld        ! number of pt3d arrays
+#else
+   SUBROUTINE ROUTINE_LNK( ptab, cd_nat, psgn      , cd_mpp, pval )
+#endif
+      ARRAY_TYPE(:,:,:,:,:)                                        ! array or pointer of arrays on which the boundary condition is applied
+      CHARACTER(len=1)            , INTENT(in   ) ::   NAT_IN(:)   ! nature of array grid-points
+      REAL(wp)                    , INTENT(in   ) ::   SGN_IN(:)   ! sign used across the north fold boundary
+      CHARACTER(len=3), OPTIONAL  , INTENT(in   ) ::   cd_mpp      ! fill the overlap area only
+      REAL(wp)        , OPTIONAL  , INTENT(in   ) ::   pval        ! background value (used at closed boundaries)
+      !
+      INTEGER  ::    ji,  jj,  jk,  jl, jh, jf   ! dummy loop indices
+      INTEGER  ::   ipi, ipj, ipk, ipl, ipf      ! dimension of the input array
+      REAL(wp) ::   zland
+      LOGICAL  ::   ll_nfd
+      !!----------------------------------------------------------------------
+      !
+      ipk = K_SIZE(ptab)   ! 3rd dimension
+      ipl = L_SIZE(ptab)   ! 4th    -
+      ipf = F_SIZE(ptab)   ! 5th    -      use in "multi" case (array of pointers)
+      !
+      ll_nfd    = jperio==3 .OR. jperio==4 .OR. jperio==5 .OR. jperio==6
+      !
+      IF( PRESENT( pval ) ) THEN   ;   zland = pval      ! set land value
+      ELSE                         ;   zland = 0._wp     ! zero by default
+      ENDIF
+
+      ! ------------------------------- !
+      !   standard boundary treatment   !    ! CAUTION: semi-column notation is often impossible
+      ! ------------------------------- !
+      !
+      IF( PRESENT( cd_mpp ) ) THEN     !==  halos filled with inner values  ==!
+         !
+         ! only fill the overlap area and extra allows 
+         ! this is in mpp case. In this module, just do nothing
+         !
+      ELSE                             !==  standard close or cyclic treatment  ==!
+         !
+         DO jf = 1, ipf                   ! number of arrays to be treated
+            !
+            !                                ! East-West boundaries
+            IF( l_Iperio ) THEN                   !* cyclic
+               ARRAY_IN( 1 ,:,:,:,jf) = ARRAY_IN(jpim1,:,:,:,jf)
+               ARRAY_IN(jpi,:,:,:,jf) = ARRAY_IN(  2  ,:,:,:,jf)
+            ELSE                                   !* closed
+               IF( .NOT. NAT_IN(jf) == 'F' )   ARRAY_IN( 1 ,:,:,:,jf) = zland    ! east except F-point
+                                               ARRAY_IN(jpi,:,:,:,jf) = zland    ! west
+            ENDIF
+            !                                ! North-South boundaries
+            IF( l_Jperio ) THEN                   !* cyclic
+               ARRAY_IN(:, 1 ,:,:,jf) = ARRAY_IN(:, jpjm1,:,:,jf)
+               ARRAY_IN(:,jpj,:,:,jf) = ARRAY_IN(:,   2  ,:,:,jf)
+            ELSEIF( ll_nfd ) THEN                  !* north fold
+               IF( .NOT. NAT_IN(jf) == 'F' )   ARRAY_IN(:, 1 ,:,:,jf) = zland    ! south except F-point
+               CALL lbc_nfd( ptab, NAT_IN(:), SGN_IN(:) OPT_K(:) )                       ! north fold treatment         
+            ELSE                                   !* closed
+               IF( .NOT. NAT_IN(jf) == 'F' )   ARRAY_IN(:, 1 ,:,:,jf) = zland    ! south except F-point
+                                               ARRAY_IN(:,jpj,:,:,jf) = zland    ! north
+            ENDIF
+            !
+         END DO
+         !
+      ENDIF
+      !
+   END SUBROUTINE ROUTINE_LNK
+
+#undef ARRAY_TYPE
+#undef NAT_IN
+#undef SGN_IN
+#undef ARRAY_IN
+#undef K_SIZE
+#undef L_SIZE
+#undef F_SIZE
+#undef OPT_K
