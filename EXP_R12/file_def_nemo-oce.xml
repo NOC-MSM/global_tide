@@ -1,0 +1,232 @@
+<?xml version="1.0"?>
+
+    <!-- 
+============================================================================================================
+=                                           output files definition                                        =
+=                                            Define your own files                                         =
+=                                         put the variables you want...                                    =
+============================================================================================================
+    -->
+    
+    <file_definition type="one_file" name="test" sync_freq="10d" min_digits="4">
+   
+      <file_group id="1h" output_freq="1h"  output_level="10" enabled=".TRUE."> <!-- 1 time step files -->
+       <file id="test" name_suffix="_T" description="ocean T grid variables" enabled=".TRUE." >
+        <field field_ref="SAx"          name="SAx"     long_name="SAx"    operation="once" />
+	<field field_ref="SSAx"         name="SSAx"    long_name="SSAx"   operation="once" />
+	<field field_ref="MMx"          name="MMx"     long_name="MMx"    operation="once" />
+	<field field_ref="MFx"          name="MFx"     long_name="MFx"    operation="once" />
+	<field field_ref="MSFx"         name="MSFx"    long_name="MSFx"   operation="once" />
+	<field field_ref="K1x"          name="K1x"     long_name="K1x"    operation="once" />
+	<field field_ref="O1x"          name="O1x"     long_name="O1x"    operation="once" />
+	<field field_ref="Q1x"          name="Q1x"     long_name="Q1x"    operation="once" />
+	<field field_ref="P1x"          name="P1x"     long_name="P1x"    operation="once" />
+	<field field_ref="J1x"          name="J1x"     long_name="J1x"    operation="once" />
+	<field field_ref="S1x"          name="S1x"     long_name="S1x"    operation="once" />
+	<field field_ref="M2x"          name="M2x"     long_name="M2x"    operation="once" />
+	<field field_ref="N2x"          name="N2x"     long_name="N2x"    operation="once" />
+	<field field_ref="S2x"          name="S2x"     long_name="S2x"    operation="once" />
+	<field field_ref="K2x"          name="K2x"     long_name="K2x"    operation="once" />
+	<field field_ref="L2x"          name="L2x"     long_name="L2x"    operation="once" />
+	<field field_ref="T2x"          name="T2x"     long_name="T2x"    operation="once" />
+	<field field_ref="LA2x"         name="LA2x"    long_name="LA2x"   operation="once" />
+	<field field_ref="R2x"          name="R2x"     long_name="R2x"    operation="once" />
+	<field field_ref="MU2x"         name="MU2x"    long_name="MU2x"   operation="once" />
+	<field field_ref="NU2x"         name="NU2x"    long_name="NU2x"   operation="once" />
+	<field field_ref="2N2x"         name="2N2x"    long_name="2N2x"   operation="once" />
+	<field field_ref="MKS2x"        name="MKS2x"   long_name="MKS2x"  operation="once" />
+	<field field_ref="EPS2x"        name="EPS2x"   long_name="EPS2x"  operation="once" />
+	<field field_ref="M3x"          name="M3x"     long_name="M3x"    operation="once" />
+	<field field_ref="MN4x"         name="MN4x"    long_name="MN4x"   operation="once" />
+	<field field_ref="M4x"          name="M4x"     long_name="M4x"    operation="once" />
+	<field field_ref="MS4x"         name="MS4x"    long_name="MS4x"   operation="once" />
+	<field field_ref="S4x"          name="S4x"     long_name="S4x"    operation="once" />
+	<field field_ref="M6x"          name="M6x"     long_name="M6x"    operation="once" />
+	<field field_ref="M8x"          name="M8x"     long_name="M8x"    operation="once" />
+
+	<field field_ref="SAy"          name="SAy"     long_name="SAy"    operation="once" />
+	<field field_ref="SSAy"         name="SSAy"    long_name="SSAy"   operation="once" />
+	<field field_ref="MMy"          name="MMy"     long_name="MMy"    operation="once" />
+	<field field_ref="MFy"          name="MFy"     long_name="MFy"    operation="once" />
+	<field field_ref="MSFy"         name="MSFy"    long_name="MSFy"   operation="once" />
+	<field field_ref="K1y"          name="K1y"     long_name="K1y"    operation="once" />
+	<field field_ref="O1y"          name="O1y"     long_name="O1y"    operation="once" />
+	<field field_ref="Q1y"          name="Q1y"     long_name="Q1y"    operation="once" />
+	<field field_ref="P1y"          name="P1y"     long_name="P1y"    operation="once" />
+	<field field_ref="J1y"          name="J1y"     long_name="J1y"    operation="once" />
+	<field field_ref="S1y"          name="S1y"     long_name="S1y"    operation="once" />
+	<field field_ref="M2y"          name="M2y"     long_name="M2y"    operation="once" />
+	<field field_ref="N2y"          name="N2y"     long_name="N2y"    operation="once" />
+	<field field_ref="S2y"          name="S2y"     long_name="S2y"    operation="once" />
+	<field field_ref="K2y"          name="K2y"     long_name="K2y"    operation="once" />
+	<field field_ref="L2y"          name="L2y"     long_name="L2y"    operation="once" />
+	<field field_ref="T2y"          name="T2y"     long_name="T2y"    operation="once" />
+	<field field_ref="LA2y"         name="LA2y"    long_name="LA2y"   operation="once" />
+	<field field_ref="R2y"          name="R2y"     long_name="R2y"    operation="once" />
+	<field field_ref="MU2y"         name="MU2y"    long_name="MU2y"   operation="once" />
+	<field field_ref="NU2y"         name="NU2y"    long_name="NU2y"   operation="once" />
+	<field field_ref="2N2y"         name="2N2y"    long_name="2N2y"   operation="once" />
+	<field field_ref="MKS2y"        name="MKS2y"   long_name="MKS2y"  operation="once" />
+	<field field_ref="EPS2y"        name="EPS2y"   long_name="EPS2y"  operation="once" />
+	<field field_ref="M3y"          name="M3y"     long_name="M3y"    operation="once" />
+	<field field_ref="MN4y"         name="MN4y"    long_name="MN4y"   operation="once" />
+	<field field_ref="M4y"          name="M4y"     long_name="M4y"    operation="once" />
+	<field field_ref="MS4y"         name="MS4y"    long_name="MS4y"   operation="once" />
+	<field field_ref="S4y"          name="S4y"     long_name="S4y"    operation="once" />
+	<field field_ref="M6y"          name="M6y"     long_name="M6y"    operation="once" />
+	<field field_ref="M8y"          name="M8y"     long_name="M8y"    operation="once" />
+
+        <field field_ref="SAx_u"          name="SAx_u"     long_name="SAx_u"    operation="once" />
+	<field field_ref="SSAx_u"         name="SSAx_u"    long_name="SSAx_u"   operation="once" />
+	<field field_ref="MMx_u"          name="MMx_u"     long_name="MMx_u"    operation="once" />
+	<field field_ref="MFx_u"          name="MFx_u"     long_name="MFx_u"    operation="once" />
+	<field field_ref="MSFx_u"         name="MSFx_u"    long_name="MSFx_u"   operation="once" />
+	<field field_ref="K1x_u"          name="K1x_u"     long_name="K1x_u"    operation="once" />
+	<field field_ref="O1x_u"          name="O1x_u"     long_name="O1x_u"    operation="once" />
+	<field field_ref="Q1x_u"          name="Q1x_u"     long_name="Q1x_u"    operation="once" />
+	<field field_ref="P1x_u"          name="P1x_u"     long_name="P1x_u"    operation="once" />
+	<field field_ref="J1x_u"          name="J1x_u"     long_name="J1x_u"    operation="once" />
+	<field field_ref="S1x_u"          name="S1x_u"     long_name="S1x_u"    operation="once" />
+	<field field_ref="M2x_u"          name="M2x_u"     long_name="M2x_u"    operation="once" />
+	<field field_ref="N2x_u"          name="N2x_u"     long_name="N2x_u"    operation="once" />
+	<field field_ref="S2x_u"          name="S2x_u"     long_name="S2x_u"    operation="once" />
+	<field field_ref="K2x_u"          name="K2x_u"     long_name="K2x_u"    operation="once" />
+	<field field_ref="L2x_u"          name="L2x_u"     long_name="L2x_u"    operation="once" />
+	<field field_ref="T2x_u"          name="T2x_u"     long_name="T2x_u"    operation="once" />
+	<field field_ref="LA2x_u"         name="LA2x_u"    long_name="LA2x_u"   operation="once" />
+	<field field_ref="R2x_u"          name="R2x_u"     long_name="R2x_u"    operation="once" />
+	<field field_ref="MU2x_u"         name="MU2x_u"    long_name="MU2x_u"   operation="once" />
+	<field field_ref="NU2x_u"         name="NU2x_u"    long_name="NU2x_u"   operation="once" />
+	<field field_ref="2N2x_u"         name="2N2x_u"    long_name="2N2x_u"   operation="once" />
+	<field field_ref="MKS2x_u"        name="MKS2x_u"   long_name="MKS2x_u"  operation="once" />
+	<field field_ref="EPS2x_u"        name="EPS2x_u"   long_name="EPS2x_u"  operation="once" />
+	<field field_ref="M3x_u"          name="M3x_u"     long_name="M3x_u"    operation="once" />
+	<field field_ref="MN4x_u"         name="MN4x_u"    long_name="MN4x_u"   operation="once" />
+	<field field_ref="M4x_u"          name="M4x_u"     long_name="M4x_u"    operation="once" />
+	<field field_ref="MS4x_u"         name="MS4x_u"    long_name="MS4x_u"   operation="once" />
+	<field field_ref="S4x_u"          name="S4x_u"     long_name="S4x_u"    operation="once" />
+	<field field_ref="M6x_u"          name="M6x_u"     long_name="M6x_u"    operation="once" />
+	<field field_ref="M8x_u"          name="M8x_u"     long_name="M8x_u"    operation="once" />
+
+	<field field_ref="SAx_v"          name="SAx_v"     long_name="SAx_v"    operation="once" />
+	<field field_ref="SSAx_v"         name="SSAx_v"    long_name="SSAx_v"   operation="once" />
+	<field field_ref="MMx_v"          name="MMx_v"     long_name="MMx_v"    operation="once" />
+	<field field_ref="MFx_v"          name="MFx_v"     long_name="MFx_v"    operation="once" />
+	<field field_ref="MSFx_v"         name="MSFx_v"    long_name="MSFx_v"   operation="once" />
+	<field field_ref="K1x_v"          name="K1x_v"     long_name="K1x_v"    operation="once" />
+	<field field_ref="O1x_v"          name="O1x_v"     long_name="O1x_v"    operation="once" />
+	<field field_ref="Q1x_v"          name="Q1x_v"     long_name="Q1x_v"    operation="once" />
+	<field field_ref="P1x_v"          name="P1x_v"     long_name="P1x_v"    operation="once" />
+	<field field_ref="J1x_v"          name="J1x_v"     long_name="J1x_v"    operation="once" />
+	<field field_ref="S1x_v"          name="S1x_v"     long_name="S1x_v"    operation="once" />
+	<field field_ref="M2x_v"          name="M2x_v"     long_name="M2x_v"    operation="once" />
+	<field 	field_ref="N2x_v"          name="N2x_v"     long_name="N2x_v"    operation="once" />
+	<field field_ref="S2x_v"          name="S2x_v"     long_name="S2x_v"    operation="once" />
+	<field field_ref="K2x_v"          name="K2x_v"     long_name="K2x_v"    operation="once" />
+	<field field_ref="L2x_v"          name="L2x_v"     long_name="L2x_v"    operation="once" />
+	<field field_ref="T2x_v"          name="T2x_v"     long_name="T2x_v"    operation="once" />
+	<field field_ref="LA2x_v"         name="LA2x_v"    long_name="LA2x_v"   operation="once" />
+	<field field_ref="R2x_v"          name="R2x_v"     long_name="R2x_v"    operation="once" />
+	<field field_ref="MU2x_v"         name="MU2x_v"    long_name="MU2x_v"   operation="once" />
+	<field field_ref="NU2x_v"         name="NU2x_v"    long_name="NU2x_v"   operation="once" />
+	<field field_ref="2N2x_v"         name="2N2x_v"    long_name="2N2x_v"   operation="once" />
+	<field field_ref="MKS2x_v"        name="MKS2x_v"   long_name="MKS2x_v"  operation="once" />
+	<field field_ref="EPS2x_v"        name="EPS2x_v"   long_name="EPS2x_v"  operation="once" />
+	<field field_ref="M3x_v"          name="M3x_v"     long_name="M3x_v"    operation="once" />
+	<field field_ref="MN4x_v"         name="MN4x_v"    long_name="MN4x_v"   operation="once" />
+	<field field_ref="M4x_v"          name="M4x_v"     long_name="M4x_v"    operation="once" />
+	<field field_ref="MS4x_v"         name="MS4x_v"    long_name="MS4x_v"   operation="once" />
+	<field field_ref="S4x_v"          name="S4x_v"     long_name="S4x_v"    operation="once" />
+	<field field_ref="M6x_v"          name="M6x_v"     long_name="M6x_v"    operation="once" />
+	<field field_ref="M8x_v"          name="M8x_v"     long_name="M8x_v"    operation="once" />
+
+	<field field_ref="SAy_u"          name="SAy_u"     long_name="SAy_u"    operation="once" />
+	<field field_ref="SSAy_u"         name="SSAy_u"    long_name="SSAy_u"   operation="once" />
+	<field field_ref="MMy_u"          name="MMy_u"     long_name="MMy_u"    operation="once" />
+	<field field_ref="MFy_u"          name="MFy_u"     long_name="MFy_u"    operation="once" />
+	<field field_ref="MSFy_u"         name="MSFy_u"    long_name="MSFy_u"   operation="once" />
+	<field field_ref="K1y_u"          name="K1y_u"     long_name="K1y_u"    operation="once" />
+	<field field_ref="O1y_u"          name="O1y_u"     long_name="O1y_u"    operation="once" />
+	<field field_ref="Q1y_u"          name="Q1y_u"     long_name="Q1y_u"    operation="once" />
+	<field field_ref="P1y_u"          name="P1y_u"     long_name="P1y_u"    operation="once" />
+	<field field_ref="J1y_u"          name="J1y_u"     long_name="J1y_u"    operation="once" />
+	<field field_ref="S1y_u"          name="S1y_u"     long_name="S1y_u"    operation="once" />
+	<field field_ref="M2y_u"          name="M2y_u"     long_name="M2y_u"    operation="once" />
+	<field field_ref="N2y_u"          name="N2y_u"     long_name="N2y_u"    operation="once" />
+	<field field_ref="S2y_u"          name="S2y_u"     long_name="S2y_u"    operation="once" />
+	<field field_ref="K2y_u"          name="K2y_u"     long_name="K2y_u"    operation="once" />
+	<field field_ref="L2y_u"          name="L2y_u"     long_name="L2y_u"    operation="once" />
+	<field field_ref="T2y_u"          name="T2y_u"     long_name="T2y_u"    operation="once" />
+	<field field_ref="LA2y_u"         name="LA2y_u"    long_name="LA2y_u"   operation="once" />
+	<field field_ref="R2y_u"          name="R2y_u"     long_name="R2y_u"    operation="once" />
+	<field field_ref="MU2y_u"         name="MU2y_u"    long_name="MU2y_u"   operation="once" />
+	<field field_ref="NU2y_u"         name="NU2y_u"    long_name="NU2y_u"   operation="once" />
+	<field field_ref="2N2y_u"         name="2N2y_u"    long_name="2N2y_u"   operation="once" />
+	<field field_ref="MKS2y_u"        name="MKS2y_u"   long_name="MKS2y_u"  operation="once" />
+	<field field_ref="EPS2y_u"        name="EPS2y_u"   long_name="EPS2y_u"  operation="once" />
+	<field field_ref="M3y_u"          name="M3y_u"     long_name="M3y_u"    operation="once" />
+	<field field_ref="MN4y_u"         name="MN4y_u"    long_name="MN4y_u"   operation="once" />
+	<field field_ref="M4y_u"          name="M4y_u"     long_name="M4y_u"    operation="once" />
+	<field field_ref="MS4y_u"         name="MS4y_u"    long_name="MS4y_u"   operation="once" />
+	<field field_ref="S4y_u"          name="S4y_u"     long_name="S4y_u"    operation="once" />
+	<field field_ref="M6y_u"          name="M6y_u"     long_name="M6y_u"    operation="once" />
+	<field field_ref="M8y_u"          name="M8y_u"     long_name="M8y_u"    operation="once" />
+
+	<field field_ref="SAy_v"          name="SAy_v"     long_name="SAy_v"    operation="once" />
+	<field field_ref="SSAy_v"         name="SSAy_v"    long_name="SSAy_v"   operation="once" />
+	<field field_ref="MMy_v"          name="MMy_v"     long_name="MMy_v"    operation="once" />
+	<field field_ref="MFy_v"          name="MFy_v"     long_name="MFy_v"    operation="once" />
+	<field field_ref="MSFy_v"         name="MSFy_v"    long_name="MSFy_v"   operation="once" />
+	<field field_ref="K1y_v"          name="K1y_v"     long_name="K1y_v"    operation="once" />
+	<field field_ref="O1y_v"          name="O1y_v"     long_name="O1y_v"    operation="once" />
+	<field field_ref="Q1y_v"          name="Q1y_v"     long_name="Q1y_v"    operation="once" />
+	<field field_ref="P1y_v"          name="P1y_v"     long_name="P1y_v"    operation="once" />
+	<field field_ref="J1y_v"          name="J1y_v"     long_name="J1y_v"    operation="once" />
+	<field field_ref="S1y_v"          name="S1y_v"     long_name="S1y_v"    operation="once" />
+	<field field_ref="M2y_v"          name="M2y_v"     long_name="M2y_v"    operation="once" />
+	<field field_ref="N2y_v"          name="N2y_v"     long_name="N2y_v"    operation="once" />
+	<field field_ref="S2y_v"          name="S2y_v"     long_name="S2y_v"    operation="once" />
+	<field field_ref="K2y_v"          name="K2y_v"     long_name="K2y_v"    operation="once" />
+	<field field_ref="L2y_v"          name="L2y_v"     long_name="L2y_v"    operation="once" />
+	<field field_ref="T2y_v"          name="T2y_v"     long_name="T2y_v"    operation="once" />
+	<field field_ref="LA2y_v"         name="LA2y_v"    long_name="LA2y_v"   operation="once" />
+	<field field_ref="R2y_v"          name="R2y_v"     long_name="R2y_v"    operation="once" />
+	<field field_ref="MU2y_v"         name="MU2y_v"    long_name="MU2y_v"   operation="once" />
+	<field field_ref="NU2y_v"         name="NU2y_v"    long_name="NU2y_v"   operation="once" />
+	<field field_ref="2N2y_v"         name="2N2y_v"    long_name="2N2y_v"   operation="once" />
+	<field field_ref="MKS2y_v"        name="MKS2y_v"   long_name="MKS2y_v"  operation="once" />
+	<field field_ref="EPS2y_v"        name="EPS2y_v"   long_name="EPS2y_v"  operation="once" />
+	<field field_ref="M3y_v"          name="M3y_v"     long_name="M3y_v"    operation="once" />
+	<field field_ref="MN4y_v"         name="MN4y_v"    long_name="MN4y_v"   operation="once" />
+	<field field_ref="M4y_v"          name="M4y_v"     long_name="M4y_v"    operation="once" />
+	<field field_ref="MS4y_v"         name="MS4y_v"    long_name="MS4y_v"   operation="once" />
+	<field field_ref="S4y_v"          name="S4y_v"     long_name="S4y_v"    operation="once" />
+	<field field_ref="M6y_v"          name="M6y_v"     long_name="M6y_v"    operation="once" />
+	<field field_ref="M8y_v"          name="M8y_v"     long_name="M8y_v"    operation="once" />
+       </file>
+      </file_group>
+ 
+      <file_group id="1h" output_freq="1h"  output_level="10" enabled=".TRUE." /> <!--1h files -->                    
+      <file_group id="2h" output_freq="2h"  output_level="10" enabled=".TRUE."/> <!-- 2h files -->
+      <file_group id="3h" output_freq="3h"  output_level="10" enabled=".TRUE."/> <!-- 3h files -->     
+      <file_group id="4h" output_freq="4h"  output_level="10" enabled=".TRUE."/> <!-- 4h files -->
+      <file_group id="6h" output_freq="6h"  output_level="10" enabled=".TRUE."/> <!-- 6h files -->
+      <file_group id="25h_mean" output_freq="1d" output_level="10" enabled=".TRUE."/>
+      <file_group id="1d" output_freq="1d"  output_level="10" enabled=".TRUE."/> <!-- 1d files -->
+      <file_group id="3d" output_freq="3d"  output_level="10" enabled=".TRUE."/> <!-- 3d files -->    
+      <file_group id="5d" output_freq="5d"  output_level="10" enabled=".TRUE."/>  <!-- 5d files -->   
+      <file_group id="1m" output_freq="1mo" output_level="10" enabled=".TRUE."/> <!-- real monthly files -->
+      <file_group id="2m" output_freq="2mo" output_level="10" enabled=".TRUE."/> <!-- real 2m files -->
+      <file_group id="3m" output_freq="3mo" output_level="10" enabled=".TRUE."/> <!-- real 3m files -->
+      <file_group id="4m" output_freq="4mo" output_level="10" enabled=".TRUE."/> <!-- real 4m files -->
+      <file_group id="6m" output_freq="6mo" output_level="10" enabled=".TRUE."/> <!-- real 6m files -->
+
+      <file_group id="1y"  output_freq="1y" output_level="10" enabled=".TRUE."/> <!-- real yearly files -->
+      <file_group id="2y"  output_freq="2y" output_level="10" enabled=".TRUE."/> <!-- real 2y files -->
+      <file_group id="5y"  output_freq="5y" output_level="10" enabled=".TRUE."/> <!-- real 5y files -->
+      <file_group id="10y" output_freq="10y" output_level="10" enabled=".TRUE."/> <!-- real 10y files -->
+
+
+   </file_definition>
+    
+

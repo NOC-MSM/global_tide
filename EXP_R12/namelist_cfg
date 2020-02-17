@@ -1,0 +1,639 @@
+&namrun
+cn_exp='GTM',
+cn_ocerst_in='rst_oce',
+cn_ocerst_indir='restarts_in',
+cn_ocerst_out='restart',
+cn_ocerst_outdir='restarts_out',
+ln_cfmeta=.true.,
+ln_clobber=.true.,
+ln_iscpl=.false.,
+ln_mskland=.false.,
+ln_rst_list=.false.,
+ln_rstart=.false.,
+ln_rstdate=.true.,
+nn_chunksz=0,
+nn_date0=19970101,
+nn_euler=1,
+nn_istate=0,
+nn_it000=1 !2977
+nn_itend=129600 !5760
+nn_leapy=0,
+nn_no=0,
+nn_rstctl=2,
+nn_stock=99999,
+nn_time0=0000,
+nn_write=99999,
+/
+&namcfg
+cn_domcfg='domain_cfg',
+ln_closea=.false.,
+ln_read_cfg=.true.,
+ln_use_jattr=.false.,
+ln_write_cfg=.false.,
+/
+&namdom
+ln_crs=.false.,
+ln_linssh=.false.,
+ln_meshmask=.false.,
+rn_atfp=0.1,
+rn_isfhmin=1.00,
+rn_rdt=360.0,
+/
+&namtsd
+cn_dir='./',
+ln_tsd_dmp=.false.,
+ln_tsd_init=.false.,
+sn_sal='salinity_clim.nc',-1,'salinity',.true.,.true.,'yearly','',
+'','',
+sn_tem='temperature_clim.nc',-1,'temperature',.true.,.true.,
+'yearly','','','',
+/
+&namwad
+/
+&namcrs
+/
+&namc1d
+/
+&namc1d_dyndmp
+/
+&namc1d_uvd
+/
+&namsbc
+ln_apr_dyn=.true.,
+ln_blk=.true.,
+ln_cpl=.false.,
+ln_dm2dc=.false.,
+ln_flx=.false.,
+ln_ice_embd=.false.,
+ln_isf=.false.,
+ln_mixcpl=.false.,
+ln_rnf=.false.,
+ln_ssr=.false.,
+ln_traqsr=.false.,
+ln_usr=.false.,
+ln_wave=.false.,
+nn_components=0,
+nn_fsbc=1,
+nn_fwb=0,
+nn_ice=0,
+nn_lsm=0,
+/
+&namsbc_flx
+/
+&namsbc_blk
+cn_dir='./fluxes/',
+ln_cd_l12=.false.,
+ln_cd_l15=.false.,
+ln_coare_3p0=.false.,
+ln_coare_3p5=.false.,
+ln_ecmwf=.false.,
+ln_ncar=.true.,
+ln_taudif=.false.,
+rn_efac=1.0,
+rn_pfac=1.0,
+rn_vfac=1.0,
+rn_zqt=2.0,
+rn_zu=10.0,
+sn_humi='era5_hourlymeans_q2',3,'q2',.true.,.false.,'yearly',
+'w_era5_R12_bc.nc','','',
+sn_prec='era5_hourlymeans_mtpr',3,'mtpr',.true.,.false.,'yearly',
+'w_era5_R12_bc.nc','','',
+sn_qlw='era5_hourlymeans_msdwlwrf',3,'msdwlwrf',.true.,.false.,'yearly',
+'w_era5_R12_bc.nc','','',
+sn_qsr='era5_hourlymeans_msdwswrf',3,'msdwswrf',.true.,.false.,'yearly',
+'w_era5_R12_bc.nc','','',
+sn_slp='era5_hourlymeans_msl',3,'msl',.true.,.false.,'yearly',
+'w_era5_R12_bc.nc','','',
+sn_snow='era5_hourlymeans_msr',3,'msr',.true.,.false.,'yearly',
+'w_era5_R12_bc.nc','','',
+sn_tair='era5_hourlymeans_t2m',3,'t2m',.true.,.false.,'yearly',
+'w_era5_R12_bc.nc','','',
+sn_wndi='era5_hourlymeans_u10',3,'u10',.true.,.false.,'yearly',
+'w_era5_R12_bc.nc','','',
+sn_wndj='era5_hourlymeans_v10',3,'v10',.true.,.false.,'yearly',
+'w_era5_R12_bc.nc','','',
+/
+&namsbc_cpl
+/
+&namsbc_sas
+/
+&namsbc_iif
+/
+&namtra_qsr
+/
+&namsbc_rnf
+/
+&namsbc_isf
+/
+&namsbc_iscpl
+/
+!-----------------------------------------------------------------------
+&namsbc_apr    !   Atmospheric pressure used as ocean forcing           (ln_apr_dyn =T)
+!-----------------------------------------------------------------------
+   rn_pref     = 101000.   !  reference atmospheric pressure   [N/m2]/
+   cn_dir = './fluxes/'        !  root directory for the Patm data location
+   !___________!_________________________!___________________!___________!_____________!________!___________!__________________!__________!_______________!
+   !           !  file name              ! frequency (hours) ! variable  ! time interp.!  clim  ! 'yearly'/ ! weights filename ! rotation ! land/sea mask !
+   !           !                         !  (if <0  months)  !   name    !   (logical) !  (T/F) ! 'monthly' !                  ! pairing  !    filename   !
+   sn_apr      = 'era5_hourlymeans_msl'  ,         3     ,'msl' ,   .true.    , .false. , 'yearly'  ,  'w_era5_R12_bc.nc'      ,    ''    ,      ''
+/
+&namsbc_ssr
+cn_dir='./',
+ln_sssr_bnd=.true.,
+nn_sssr=2,
+nn_sstr=0,
+rn_deds=-33.3333333,
+rn_sssr_bnd=4.0,
+sn_sss='sss_1m.nc',-1,'vosaline',.true.,.true.,'yearly','','','',
+/
+&namsbc_wave
+/
+&namberg
+cn_dir='./',
+ln_bergdia=.false.,
+ln_icebergs=.false.,
+ln_operator_splitting=.true.,
+ln_passive_mode=.false.,
+nn_sample_rate=96,
+nn_test_icebergs=-1,
+nn_verbose_level=1,
+nn_verbose_write=96,
+rn_bits_erosion_fraction=0.0,
+rn_distribution=0.24,0.12,0.15,0.18,0.12,0.07,0.03,0.03,0.03,0.02,
+rn_initial_mass=8.8e7,4.1e8,3.3e9,1.8e10,3.8e10,7.5e10,1.2e11,2.2e11,3.9e11,
+7.4e11,
+rn_initial_thickness=40.0,67.0,133.0,175.0,6*250.0,
+rn_low_ratio=1.5,
+rn_mass_scaling=2000,200,50,20,10,5,2,1,1,1,
+rn_rho_bergs=850.0,
+rn_sicn_shift=0.0,
+rn_speed_limit=0.0,
+sn_icb='calving',-1,'calvingmask',.true.,.true.,'yearly','','','',
+/
+&namlbc
+ln_vorlat=.false.,
+rn_shlat=0.0,
+/
+&namagrif
+/
+&nam_tide
+
+clname(1) = 'SA'
+clname(2) = 'SSA'
+clname(3) = 'MM'
+clname(4) = 'MSF'
+clname(5) = 'MF'
+clname(6) = 'K1'
+clname(7) = 'Q1'
+clname(8) = 'O1'
+clname(9) = 'P1'
+clname(10) = 'S1'
+clname(11) = 'J1'
+clname(12) = 'M2'
+clname(13) = 'S2'
+clname(14) = '2N2'
+clname(15) = 'MU2'
+clname(16) = 'N2'
+clname(17) = 'NU2'
+clname(18) = 'L2'
+clname(19) = 'T2'
+clname(20) = 'K2'
+clname(21) = 'MKS2'
+clname(22) = 'LA2'
+clname(23) = 'R2'
+clname(24) = 'EPS2'
+
+ln_read_load=.false.,
+ln_scal_load=.true.,
+ln_tide=.true.,
+ln_tide_pot=.true.,
+ln_tide_ramp=.false.,
+rdttideramp=1.0,
+rn_scal_load= 0.094,
+/
+&nambdy
+/
+&nambdy_dta
+/
+&nambdy_tide
+/
+&namdrg
+ln_drgimp=.false.,
+ln_lin=.false.,
+ln_loglayer=.true.,
+ln_non_lin=.false.,
+ln_off=.false.,
+/
+&namdrg_top
+/
+&namdrg_bot
+ln_boost=.false.,
+rn_boost=50.0,
+rn_cd0=1.0e-3,
+rn_cdmax=0.1,
+rn_z0=3.0e-3,
+/
+&nambbc
+cn_dir='./',
+ln_trabbc=.false.,
+nn_geoflx=2,
+sn_qgh='geothermal_heating.nc',-12,'heatflow',.false.,.true.,
+'yearly','','','',
+/
+&nambbl
+ln_trabbl=.true.,
+nn_bbl_adv=1,
+nn_bbl_ldf=1,
+rn_ahtbbl=1000.0,
+rn_gambbl=10.0,
+/
+&nameos
+ln_eos80=.true.,
+ln_seos=.false.,
+ln_teos10=.false.,
+/
+&namtra_adv
+ln_traadv_cen=.false.,
+ln_traadv_fct=.true.,
+ln_traadv_mus=.false.,
+ln_traadv_off=.false.,
+ln_traadv_qck=.false.,
+ln_traadv_ubs=.false.,
+nn_fct_h=2,
+nn_fct_v=2,
+/
+&namtra_adv_mle
+ln_mle=.false.,
+/
+&namtra_ldf
+ln_traldf_blp=.false.,
+ln_traldf_hor=.false.,
+ln_traldf_iso=.true.,
+ln_traldf_lap=.true.,
+ln_traldf_lev=.false.,
+ln_traldf_msc=.false.,
+ln_traldf_off=.false.,
+ln_traldf_triad=.false.,
+nn_aht_ijk_t=20,
+rn_slpmax=0.01,
+rn_ud=0.011,
+/
+&namtra_ldfeiv
+ln_ldfeiv=.false.,
+ln_ldfeiv_dia=.false.,
+nn_aei_ijk_t=21,
+rn_aeiv_0=2000.0,
+/
+&namtra_dmp
+ln_tradmp=.false.,
+/
+&nam_vvl
+ln_vvl_adv_cn2=.false.,
+ln_vvl_adv_fct=.true.,
+ln_vvl_blp=.false.,
+ln_vvl_dbg=.false.,
+ln_vvl_lap=.false.,
+ln_vvl_ramp=.true.,
+ln_vvl_regrid=.true.,
+ln_vvl_zstar=.true.,
+ln_vvl_zstar_at_eqtor=.false.,
+ln_vvl_zstar_on_shelf=.false.,
+ln_vvl_ztilde=.false.,
+ln_vvl_ztilde_as_zstar=.false.,
+rn_ahe3_blp=-2.e8,
+rn_ahe3_lap=0.,
+rn_day_ramp=10.,
+rn_lf_cutoff=5.0,
+rn_rst_e3t=30.0,
+/
+&namdyn_adv
+ln_dynadv_cen2=.false.,
+ln_dynadv_off=.false.,
+ln_dynadv_ubs=.false.,
+ln_dynadv_vec=.true.,
+nn_dynkeg=1,
+/
+&namdyn_vor
+ln_dynvor_een=.true.,
+ln_dynvor_eet=.false.,
+ln_dynvor_ene=.false.,
+ln_dynvor_ens=.false.,
+ln_dynvor_ent=.false.,
+ln_dynvor_mix=.false.,
+ln_dynvor_msk=.false.,
+nn_een_e3f=0,
+/
+&namdyn_hpg
+ln_hpg_djc=.false.,
+ln_hpg_isf=.false.,
+ln_hpg_prj=.false.,
+ln_hpg_sco=.true.,
+ln_hpg_zco=.false.,
+ln_hpg_zps=.false.,
+/
+&namdyn_spg
+ln_bt_auto=.true.,
+ln_bt_av=.true.,
+ln_bt_fw=.true.,
+ln_dynspg_exp=.false.,
+ln_dynspg_ts=.true.,
+nn_baro=30,
+nn_bt_flt=1,
+rn_bt_cmax=0.8,
+/
+&namdyn_ldf
+ln_dynldf_blp=.true.,
+ln_dynldf_hor=.false.,
+ln_dynldf_iso=.false.,
+ln_dynldf_lap=.false.,
+ln_dynldf_lev=.true.,
+ln_dynldf_off=.false.,
+nn_ahm_ijk_t=20,
+rn_uv=0.0838,
+/
+&namzdf
+ln_zdfcst=.false.,
+ln_zdfddm=.true.,
+ln_zdfevd=.true.,
+ln_zdfgls=.true.,
+ln_zdfiwm=.false.,
+ln_zdfnpc=.false.,
+ln_zdfosm=.false.,
+ln_zdfric=.false.,
+ln_zdfswm=.false.,
+ln_zdftke=.false.,
+ln_zdftmx=.false.,
+nn_avb=0,
+nn_evdm=1,
+nn_havtb=1,
+rn_avm0=1.2e-4,
+rn_avt0=1.2e-5,
+rn_avts=1.0e-4,
+rn_evd=10.0,
+rn_hsbfr=1.6,
+/
+&namzdf_ric
+ln_mldw=.false.,
+nn_ric=2,
+rn_alp=5.0,
+rn_avmri=100.0e-4,
+rn_ekmfc=0.7,
+rn_mldmax=1000.0,
+rn_mldmin=1.0,
+rn_wtmix=10.0,
+rn_wvmix=10.0,
+/
+&namzdf_tke
+ln_drg=.false.,
+ln_lc=.true.,
+ln_mxl0=.true.,
+nn_etau=1,
+nn_htau=4,
+nn_mxl=3,
+nn_pdl=1,
+rn_bshear=1.0e-20,
+rn_ebb=67.83,
+rn_ediff=0.1,
+rn_ediss=0.7,
+rn_efr=0.05,
+rn_emin=1.0e-6,
+rn_emin0=1.0e-4,
+rn_lc=0.15,
+rn_mxl0=0.04,
+/
+&namzdf_gls
+ln_length_lim=.true.,
+ln_sigpsi=.true.,
+nn_bc_bot=1,
+nn_bc_surf=1,
+nn_clos=1,
+nn_stab_func=2,
+nn_z0_met=2,
+rn_charn=70000.0,
+rn_clim_galp=0.267,
+rn_crban=100.0,
+rn_emin=1.0e-7,
+rn_epsmin=1.0e-12,
+rn_frac_hs=1.3,
+rn_hsro=0.02,
+/
+&namzdf_mldzint
+nn_mld_diag=2,
+sn_mld1=1,10.0,0.2,0.1,
+sn_mld2=1,10.0,-0.2,0,
+/
+&namzdf_osm
+ln_convmix=.true.,
+ln_dia_osm=.true.,
+ln_kpprimix=.true.,
+ln_use_osm_la=.false.,
+nn_ave=0,
+nn_osm_wave=0,
+rn_difconv=1.0,
+rn_difri=0.005,
+rn_osm_dstokes=5.0,
+rn_osm_hbl0=10.0,
+rn_riinfty=0.7,
+/
+&namzdf_iwm
+ln_mevar=.true.,
+ln_tsdiff=.true.,
+nn_zpyc=1,
+/
+&namzdf_tmx
+ln_tmx_itf=.true.,
+rn_htmx=500.0,
+rn_me=0.2,
+rn_n2min=1.0e-8,
+rn_tfe=0.333,
+rn_tfe_itf=1.0,
+/
+&nammpp
+cn_mpi_send='I',
+jpni=0,
+jpnij=0,
+jpnj=0,
+ln_nnogather=.true.,
+nn_buffer=0,
+/
+&namctl
+ln_ctl=.false.,
+ln_diacfl=.false.,
+ln_timing=.true.,
+nn_ictle=0,
+nn_ictls=0,
+nn_isplt=1,
+nn_jctle=0,
+nn_jctls=0,
+nn_jsplt=1,
+nn_print=0,
+/
+&namsto
+cn_storst_in='restart_sto',
+cn_storst_out='restart_sto',
+ln_rstseed=.true.,
+ln_rststo=.false.,
+ln_sto_eos=.false.,
+nn_eos_flt=0,
+nn_eos_ord=1,
+nn_sto_eos=1,
+rn_eos_lim=2.0,
+rn_eos_stdxy=1.4,
+rn_eos_stdz=0.7,
+rn_eos_tcor=1440.0,
+/
+&namtrd
+ln_dyn_mxl=.false.,
+ln_dyn_trd=.false.,
+ln_glo_trd=.false.,
+ln_ke_trd=.false.,
+ln_pe_trd=.false.,
+ln_tra_mxl=.false.,
+ln_tra_trd=.false.,
+ln_vor_trd=.false.,
+/
+&namptr
+ln_diaptr=.false.,
+/
+&namhsb
+ln_diahsb=.true.,
+/
+&namdiu
+ln_diurnal=.false.,
+ln_diurnal_only=.false.,
+/
+&namflo
+jpnfl=1,
+jpnnewflo=0,
+ln_argo=.false.,
+ln_ariane=.true.,
+ln_flo_ascii=.true.,
+ln_flork4=.false.,
+ln_rstflo=.false.,
+nn_stockfl=5475,
+nn_writefl=75,
+/
+!-----------------------------------------------------------------------
+&nam_diaharm   !   Harmonic analysis of tidal constituents              ("key_diaharm")
+!-----------------------------------------------------------------------
+    nit000_han = 36000 !20446         ! First time step used for harmonic analysis
+    nitend_han = 129599 !38017        ! Last time step used for harmonic analysis
+    nstep_han  = 10        ! Time step frequency for harmonic analysis
+ 
+    tname(1) = 'SA'
+    tname(2) = 'SSA'
+    tname(3) = 'MM'
+    tname(4) = 'MSF'
+    tname(5) = 'MF'
+    tname(6) = 'K1'
+    tname(7) = 'Q1'
+    tname(8) = 'O1'
+    tname(9) = 'P1'
+    tname(10) = 'S1'
+    tname(11) = 'J1'
+    tname(12) = 'M2'
+    tname(13) = 'S2'
+    tname(14) = '2N2'
+    tname(15) = 'MU2'
+    tname(16) = 'N2'
+    tname(17) = 'NU2'
+    tname(18) = 'L2'
+    tname(19) = 'T2'
+    tname(20) = 'K2'
+    tname(21) = 'MKS2'
+    tname(22) = 'LA2'
+    tname(23) = 'R2'
+    tname(24) = 'EPS2'
+    tname(25) = 'M4'
+    tname(26) = 'M6'
+    tname(27) = 'M8'
+    tname(28) = 'S4'
+    tname(29) = 'MS4'
+    tname(30) = 'MN4'
+    tname(31) = 'M3'
+/
+&namdct
+nn_dct=15,
+nn_dctwri=15,
+nn_secdebug=112,
+/
+&nam_diatmb
+ln_diatmb=.false.,
+/
+&nam_dia25h
+ln_dia25h=.false.,
+/
+&namnc4
+ln_nc4zip=.true.,
+nn_nchunks_i=4,
+nn_nchunks_j=4,
+nn_nchunks_k=31,
+/
+&namobs
+cn_altbiasfile='altbias.nc',
+cn_gridsearchfile='gridsearch.nc',
+cn_profbfiles='profiles_01.nc',
+cn_sicfbfiles='sic_01.nc',
+cn_slafbfiles='sla_01.nc',
+cn_sssfbfiles='sss_01.nc',
+cn_sstbiasfiles='sstbias.nc',
+cn_sstfbfiles='sst_01.nc',
+cn_velfbfiles='vel_01.nc',
+ln_altbias=.false.,
+ln_diaobs=.false.,
+ln_grid_global=.true.,
+ln_grid_search_lookup=.false.,
+ln_ignmis=.true.,
+ln_nea=.false.,
+ln_s3d=.false.,
+ln_s_at_t=.false.,
+ln_sic=.false.,
+ln_sic_fp_indegs=.true.,
+ln_sla=.false.,
+ln_sla_fp_indegs=.true.,
+ln_sss=.false.,
+ln_sss_fp_indegs=.true.,
+ln_sst=.false.,
+ln_sst_fp_indegs=.true.,
+ln_sstbias=.false.,
+ln_sstnight=.false.,
+ln_t3d=.false.,
+ln_vel3d=.false.,
+nn_1dint=0,
+nn_2dint=0,
+nn_2dint_sic=0,
+nn_2dint_sla=0,
+nn_2dint_sss=0,
+nn_2dint_sst=0,
+nn_msshc=0,
+nn_profdavtypes=-1,
+rn_dobsend=10102.000000,
+rn_dobsini=10101.000000,
+rn_gridsearchres=0.5,
+rn_mdtcorr=1.61,
+rn_mdtcutoff=65.0,
+rn_sic_avglamscl=0.0,
+rn_sic_avgphiscl=0.0,
+rn_sla_avglamscl=0.0,
+rn_sla_avgphiscl=0.0,
+rn_sss_avglamscl=0.0,
+rn_sss_avgphiscl=0.0,
+rn_sst_avglamscl=0.0,
+rn_sst_avgphiscl=0.0,
+/
+&nam_asminc
+ln_asmdin=.false.,
+ln_asmiau=.false.,
+ln_bkgwri=.false.,
+ln_dyninc=.false.,
+ln_salfix=.false.,
+ln_sshinc=.false.,
+ln_trainc=.false.,
+niaufn=0,
+nitbkg=0,
+nitdin=0,
+nitiaufin=15,
+nitiaustr=1,
+nn_divdmp=0,
+salfixmin=-9999,
+/
