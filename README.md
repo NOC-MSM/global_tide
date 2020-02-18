@@ -7,6 +7,7 @@
    | |  | || | | |  _|   | |\/| | | | | | | |  _| | |     
    | |  | || |_| | |___  | |  | | |_| | |_| | |___| |___  
    |_| |___|____/|_____| |_|  |_|\___/|____/|_____|_____|                                                      
+`
                  .
          o               .        ___---___                    .                   
                 .              .--\        --.     .     .         .
@@ -23,7 +24,8 @@
              |    .          ~\ \   .      /  /~          o
            .                   ~--___ ; ___--~       
                              .          ---         .              
-`
+
+
 This repository contains the NEMO configuration information used for v1.0 of the NOC
 global tide dataset. It contains the directories:
 
