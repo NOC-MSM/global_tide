@@ -54,3 +54,14 @@ on the GO8p0.1 configuration and uses NEMO version 4.0.
 More information below.
 
 7. **/cpp_GTM.sh/** - compile options for NEMO configuration. 
+
+## Modifications in the MY_SRC directory:
+
+**Overview.** Changes are to to do with updating the tidal forcing code slightly (according to [reference]), switching off surface fluxes and tracer processes as well the introduction as a basic internal wave drag parameterization from [reference].
+
+By file:
+
+1.
+2.
+3.
+4.
