@@ -57,7 +57,7 @@ More information below.
 
 ## Modifications in the MY_SRC directory:
 
-**Overview.** Changes are to to do with updating the tidal forcing code slightly (according to [reference]), switching off surface fluxes and tracer processes as well the introduction as a basic internal wave drag parameterization from [reference]. Nico's changes are marked in the code with NB. My changes are marked with DB:.
+**Overview.** Changes are to to do with updating the tidal forcing code slightly (according to [https://github.com/NOC-MSM/NEMO_cfgs/blob/master/recipes/docs/source/FES2014_NEMO.rst]), switching off surface fluxes and tracer processes as well the introduction as a basic internal wave drag parameterization from [reference]. Nico's changes are marked in the code with NB. My changes are marked with DB:.
 
 By file:
 
