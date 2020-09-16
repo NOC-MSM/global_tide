@@ -57,11 +57,12 @@ More information below.
 
 ## Modifications in the MY_SRC directory:
 
-**Overview.** Changes are to to do with updating the tidal forcing code slightly (according to [reference]), switching off surface fluxes and tracer processes as well the introduction as a basic internal wave drag parameterization from [reference].
+**Overview.** Changes are to to do with updating the tidal forcing code slightly (according to [reference]), switching off surface fluxes and tracer processes as well the introduction as a basic internal wave drag parameterization from [reference]. Nico's changes are marked in the code with NB. My changes are marked with DB:.
 
 By file:
 
-1.
-2.
-3.
-4.
+1. tide.h90 :: Updated tidal potential forcing values (e.g. equilibrium tide amplitude). Data for more harmonic constituents than base NEMO. Should match the FES2014 dataset.
+2. tide_mod.F90 :: Updated nodal factor equation for some harmonics.
+3. sbctide.F90 :: Tidal potential equation for long period tides (previously not included).
+4. dynspg_ts.F90 :: Reads tidal dissipation input array and applies to bottom friction component.
+5. step.F90 :: Applies constant density by switching off calls to e.o.s, buoyancy frequency, tracer processes.
